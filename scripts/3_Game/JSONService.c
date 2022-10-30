@@ -46,7 +46,7 @@ class JSONService<Class T>: Managed {
 		T data;
 		string error;
 		JsonSerializer js = new JsonSerializer();
-		js.ReadFromString(data, content, error)
+		js.ReadFromString(data, content, error);
 		return data;
 	}
 

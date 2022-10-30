@@ -27,16 +27,6 @@ class CfgMods
 				value = "";
 				files[] = { "RF/scripts/3_Game" };
 			};
-			class worldScriptModule
-			{
-				value = "";
-				files[] = { "RF/scripts/4_World" };
-			};
-			class missionScriptModule
-			{
-				value = "";
-				files[] = { "RF/scripts/5_Mission" };
-			};
 		};
 	};
 };
