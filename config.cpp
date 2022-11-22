@@ -50,3 +50,24 @@ class CfgMods
 		};
 	};
 };
+
+class CfgSoundShaders
+{
+	class RF_Notification_SoundShader
+	{
+		samples[] = {{"RF\data\sounds\notification", 1}};
+		volume = 1;
+	};
+	
+};
+
+class CfgSoundSets
+{
+	class RF_Notification_SoundSet
+	{
+		soundShaders[] = {"RF_Notification_SoundShader"};
+		volumeFactor = 1;
+		frequencyFactor = 1;
+		spatial = 1;
+	};
+};

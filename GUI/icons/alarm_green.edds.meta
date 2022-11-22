@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{E444E66A74A2B4EC}RF/GUI/icons/alarm_green.edds"
+ Author "home-pc"
+ ChangeDate -1335071367
+ Configurations {
+  PNGResourceClass PC {
+   SourceFile "alarm_green.png"
+  }
+  PNGResourceClass XBOX_ONE : PC {
+  }
+  PNGResourceClass PS4 : PC {
+  }
+  PNGResourceClass LINUX : PC {
+  }
+ }
+}

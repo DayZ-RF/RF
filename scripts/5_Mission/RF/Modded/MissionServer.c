@@ -1,10 +1,15 @@
 // Модифицированный класс MissionServer
 modded class MissionServer
 {
+
+	//MARK: - Override Methods 
+
 	override void OnInit() {
 		super.OnInit();
 		welcomeMessage();
 	}
+
+	//MARK: - Private Mehtods 
 
 	void welcomeMessage() {
 		Print("\n\n");

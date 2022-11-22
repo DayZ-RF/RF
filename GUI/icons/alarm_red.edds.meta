@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{ABE9FFA94A960038}RF/GUI/icons/alarm_red.edds"
+ Author "home-pc"
+ ChangeDate -1301516935
+ Configurations {
+  PNGResourceClass PC {
+   SourceFile "alarm_red.png"
+  }
+  PNGResourceClass XBOX_ONE : PC {
+  }
+  PNGResourceClass PS4 : PC {
+  }
+  PNGResourceClass LINUX : PC {
+  }
+ }
+}
