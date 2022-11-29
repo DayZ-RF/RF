@@ -1,7 +1,7 @@
 // Модифицированный класс MissionServer
 modded class MissionServer
 {
-	void OnInit() {
+	override void OnInit() {
 		super.OnInit();
 		welcomeMessage();
 	}
@@ -24,7 +24,7 @@ modded class MissionServer
 		Print(" ##::::::: ##::. ##:: ##.... ##: ##:.:: ##: ##::::::: ##: ##: ##: ##:::: ##: ##::. ##:: ##:. ##::");
 		Print(" ##::::::: ##:::. ##: ##:::: ##: ##:::: ##: ########:. ###. ###::. #######:: ##:::. ##: ##::. ##:");
 		Print("..::::::::..:::::..::..:::::..::..:::::..::........:::...::...::::.......:::..:::::..::..::::..::");
-		Print("V 																	V")
+		Print("V 																	V");
 		Print("----------------------------------------------------------------------");
 		Print("-> This is a free open source framework, created by Roman and Fedor <-");
 		Print("-> 				You are able to use it on your server			   <-");
