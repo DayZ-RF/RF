@@ -43,10 +43,13 @@ modded class DayZGame {
 	bool Unsubscribe(Managed object, string dayZGameEvent) {
 		if (!subscribersMap[dayZGameEvent]) return false;
 
-		int index = dayZGameEvents.Find(dayZGameEvent);
-		if (index == -1) return false;
+		int eventIndex = dayZGameEvents.Find(dayZGameEvent);
+		if (eventIndex == -1) return false;
 		
-		subscribersMap[dayZGameEvent].Remove(index);
+		int objectIndex = subscribersMap[dayZGameEvent].Find(object);
+		if (objectIndex == -1) return false;
+		
+		subscribersMap[dayZGameEvent].Remove(objectIndex);
 		
 		return true;
 	}
@@ -56,9 +59,13 @@ modded class DayZGame {
 	private void call(string dayZGameEvent, Param params) {
 		autoptr TManagedSet subscribers = subscribersMap[dayZGameEvent];
 		if (!subscribers) return;
-		
-		foreach (Managed subscriber : subscribers) {
-			if (subscriber == null) continue;
+
+        for (int i = subscribers.Count() - 1; i >= 0; i--) {
+            auto subscriber = subscribers[i];
+            if (!subscriber) {
+                subscribers.Remove(i); 
+                continue;
+            }
 			GetGame().GameScript.CallFunctionParams(subscriber, dayZGameEvent, NULL, params);
 		}
 	}

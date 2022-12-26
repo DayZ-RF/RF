@@ -22,10 +22,30 @@ class CfgMods
 		dir="RF";
 		class defs
 		{
+			class coreScriptModule
+			{
+				value = "";
+				files[] = { "RF/scripts/1_Core" };
+			};
+			class gameLibScriptModule
+			{
+				value = "";
+				files[] = { "RF/scripts/2_GameLib" };
+			};
 			class gameScriptModule
 			{
 				value = "";
 				files[] = { "RF/scripts/3_Game" };
+			};
+			class worldScriptModule
+			{
+				value = "";
+				files[] = { "RF/scripts/4_World" };
+			};
+			class missionScriptModule
+			{
+				value = "";
+				files[] = { "RF/scripts/5_Mission" };
 			};
 		};
 	};
