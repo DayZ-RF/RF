@@ -40,6 +40,20 @@ class RFDiscordService: Managed {
 		}
 	}
 
+	// Send message to Discord channels
+	//
+	// - endpoint: Webhook URL
+	// - message: Message Content
+	void SendToEndpoint(string endpoint, string message) {
+		RFDispatchItem item = new RFDispatchItem();
+		item.endpoint = endpoint;
+		item.message = message;
+		items.Insert(item);
+		if (items.Count() == 1) {
+			ResumeTimer();
+		}
+	}
+
 	// MARK: - Timer Targets (Do not call it yourself)
 
 	void StopTimerForAWhile() {
