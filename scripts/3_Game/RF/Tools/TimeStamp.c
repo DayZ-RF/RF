@@ -84,19 +84,19 @@ class RF_TimeStamp: Managed {
 		return time == a.GetTime();
 	}
 	
-	RF_TimeStamp Add(int day, int hour, int minute, int second) {
+	RF_TimeStamp Add(int Day, int Hour, int Minute, int Second) {
 		auto timeStamp = new RF_TimeStamp();
-		bool isConfigured = timeStamp.configure(time + day * secondsInDay + hour * secondsInHour + minute * secondsInMinute + second * secondsInSecond);
+		bool isConfigured = timeStamp.configure(time + Day * secondsInDay + Hour * secondsInHour + Minute * secondsInMinute + Second * secondsInSecond);
 		if (!isConfigured) return null;
 		return timeStamp;
 	}
 	
-	bool SetGMT(int gmt) {
-		this.gmt[0] = (gmt / 1000) % 10;
-		this.gmt[1] = (gmt / 100) % 10;
-		this.gmt[2] = (gmt / 10) % 10;
-		this.gmt[3] = (gmt / 1) % 10;
-		int gmtSeconds = (gmt / 100) * secondsInHour + (gmt % 100) * secondsInMinute;
+	bool SetGMT(int GMT) {
+		this.gmt[0] = (GMT / 1000) % 10;
+		this.gmt[1] = (GMT / 100) % 10;
+		this.gmt[2] = (GMT / 10) % 10;
+		this.gmt[3] = (GMT / 1) % 10;
+		int gmtSeconds = (GMT / 100) * secondsInHour + (GMT % 100) * secondsInMinute;
 		return configure(time + gmtSeconds);
 	}
 
@@ -107,19 +107,19 @@ class RF_TimeStamp: Managed {
 	
 	// MARK: - Private
 
-	private bool configure(int time) {
-		if (time < 0) return false;
+	private bool configure(int Time) {
+		if (Time < 0) return false;
 
-		this.time = time;
+		this.time = Time;
 
 		int mat[3];
-		RF_Time.HighFromDays(time / secondsInDay, mat);
+		RF_Time.HighFromDays(Time / secondsInDay, mat);
 
 		year = mat[0];
 		month = mat[1];
 		day = mat[2];
 
-		RF_Time.LowFromSeconds(time % secondsInDay, mat);
+		RF_Time.LowFromSeconds(Time % secondsInDay, mat);
 
 		hour = mat[0];
 		minute = mat[1];
@@ -128,17 +128,17 @@ class RF_TimeStamp: Managed {
 		return true;
 	}
 
-	private bool configure(int year, int month, int day, int hour, int minute, int second) {
-		if (year < 1970 || month < 1 || day < 1 || hour < 0 || minute < 0 || second < 0) return false;
+	private bool configure(int Year, int Month, int Day, int Hour, int Minute, int Second) {
+		if (Year < 1970 || Month < 1 || Day < 1 || Hour < 0 || Minute < 0 || Second < 0) return false;
 
-		this.year = year;
-		this.month = month;
-		this.day = day;
-		this.hour = hour;
-		this.minute = minute;
-		this.second = second;
+		this.year = Year;
+		this.month = Month;
+		this.day = Day;
+		this.hour = Hour;
+		this.minute = Minute;
+		this.second = Second;
 
-		this.time = RF_Time.DaysFromHigh(year, month, day) * secondsInDay + RF_Time.SecondsFromLow(hour, minute, second);
+		this.time = RF_Time.DaysFromHigh(Year, Month, Day) * secondsInDay + RF_Time.SecondsFromLow(Hour, Minute, Second);
 
 		return true;
 	}

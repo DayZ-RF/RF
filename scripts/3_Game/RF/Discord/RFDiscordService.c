@@ -102,25 +102,25 @@ class RFDiscordService: Managed {
 
 	// MARK: - Private
 
-	private void loadConfig(out RFDiscordConfig config) {
+	private void loadConfig(out RFDiscordConfig Config) {
 		string rfFolder = "$profile:RF/";
 		string discordFolder = rfFolder + "DISCORD/";
 		string path = discordFolder + "config.json";
 		if (!FileExist(rfFolder)) MakeDirectory(rfFolder);
 		if (!FileExist(discordFolder)) MakeDirectory(discordFolder);
-		JSONService<RFDiscordConfig>.ReadFile(path, config);
-		if (!config) {
-			config = new RFDiscordConfig();
+		JSONService<RFDiscordConfig>.ReadFile(path, Config);
+		if (!Config) {
+			Config = new RFDiscordConfig();
 			RFDiscordWebhook newWebhook = new RFDiscordWebhook();
 			newWebhook.name = "type [edit me]";
 			newWebhook.endpoints = {"https://discord.com/api/webhooks/[edit me]/[edit me]", "https://discord.com/api/webhooks/[edit me]/[edit me]"};
-			config.webhooks.Insert(newWebhook);
+			Config.webhooks.Insert(newWebhook);
 		}
-		JSONService<RFDiscordConfig>.WriteFile(path, config);
+		JSONService<RFDiscordConfig>.WriteFile(path, Config);
 	}
 
-	private RFDiscordWebhook getOptionalWebhook(out RFDiscordConfig config, string name) {
-		foreach (RFDiscordWebhook webhook : config.webhooks) {
+	private RFDiscordWebhook getOptionalWebhook(out RFDiscordConfig Config, string name) {
+		foreach (RFDiscordWebhook webhook : Config.webhooks) {
 			if (webhook.name == name) return webhook;
 		}
 		return null;
