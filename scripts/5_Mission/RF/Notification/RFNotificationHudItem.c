@@ -14,8 +14,8 @@ class RFNotificationHudItem: Managed {
 
 	// MARK: - Init ----------------------------------
 
-	void RFNotificationHudItem(RFNotificationHud parent, RFNotificationEntity data) {
-		this.parent = parent;
+	void RFNotificationHudItem(RFNotificationHud Parent, RFNotificationEntity data) {
+		this.parent = Parent;
 
 		rootWidget = GetGame().GetWorkspace().CreateWidgets("RF/GUI/Layouts/RFNotificationHud.layout");
 
