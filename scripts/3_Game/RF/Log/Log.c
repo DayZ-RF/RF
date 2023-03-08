@@ -1,6 +1,6 @@
 class RF_Log: Managed {
 
-    // MARK: - Constants
+    // MARK: - Internal Properties
 
     string GetModName() {
         return "RF";

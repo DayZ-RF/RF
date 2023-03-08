@@ -18,6 +18,33 @@ class RF_RPCInstance: Managed {
         if (game) game.Unsubscribe(this, "OnRPC");
     }
 
+    // MARK: - Internal
+
+    void Send(string key, PlayerIdentity playerIdentity = null) {
+        Param2<string, string> param = new Param2<string, string>(GetModName(), key);
+        GetGame().RPCSingleParam(null, GetRPCType(), param, true, playerIdentity);
+    }
+
+    void Send(string key, int rpcObject, PlayerIdentity playerIdentity = null) {
+        Param3<string, string, int> param = new Param3<string, string, int>(GetModName(), key, rpcObject);
+        GetGame().RPCSingleParam(null, GetRPCType(), param, true, playerIdentity);
+    }
+
+    void Send(string key, float rpcObject, PlayerIdentity playerIdentity = null) {
+        Param3<string, string, float> param = new Param3<string, string, float>(GetModName(), key, rpcObject);
+        GetGame().RPCSingleParam(null, GetRPCType(), param, true, playerIdentity);
+    }
+
+    void Send(string key, vector rpcObject, PlayerIdentity playerIdentity = null) {
+        Param3<string, string, vector> param = new Param3<string, string, vector>(GetModName(), key, rpcObject);
+        GetGame().RPCSingleParam(null, GetRPCType(), param, true, playerIdentity);
+    }
+
+    void Send(string key, string rpcObject, PlayerIdentity playerIdentity = null) {
+        Param3<string, string, string> param = new Param3<string, string, string>(GetModName(), key, rpcObject);
+        GetGame().RPCSingleParam(null, GetRPCType(), param, true, playerIdentity);
+    }
+
     // MARK: - Subscribe
     
     void OnRPC(PlayerIdentity sender, Object target, int rpc_type, ParamsReadContext ctx) {
@@ -30,7 +57,6 @@ class RF_RPCInstance: Managed {
         ctx.Read(modName);
         ctx.Read(key);
 
-        if (countOfParams != 3) return;
         if (modName != GetModName()) return;
         if (!key) return;
 
