@@ -7,6 +7,7 @@ modded class DayZGame {
 	private autoptr array<string> dayZGameEvents = {
 		"OnUpdate",
 		"OnKeyPress",
+		"OnKeyRelease",
 		"OnRPC",
 	};
 	
@@ -29,6 +30,11 @@ modded class DayZGame {
         super.OnKeyPress(key);
 		
 		call("OnKeyPress", new Param1<int>(key));
+    }
+
+    override void OnKeyRelease(int key) {
+        super.OnKeyRelease(key);
+		call("OnKeyRelease", new Param1<int>(key));
     }
 
 	override void OnRPC(PlayerIdentity sender, Object target, int rpc_type, ParamsReadContext ctx) {
