@@ -31,7 +31,10 @@ class RF_LODHelper: Managed {
 				if (!childObject) return null;
                 
 				auto child = EntityAI.Cast(childObject);
-				if (!child) return null;
+				if (!child) {
+					childObject.Delete();
+					return null;
+				}
 
                 vector mat[4];
                 auto direction = output.CurrentGlobalDirection();
