@@ -1,6 +1,6 @@
 # Time Stamp
 
-### Static Methods
+### Available Methods
 
 
 | Key    | function name | input variables                                                | return       |
