@@ -66,6 +66,22 @@ modded class DayZGame {
 		
 		return true;
 	}
+
+	bool RF_IsCtrlHolding() {
+		return m_IsCtrlHolding;
+	}
+
+	bool RF_IsWinHolding() {
+		return m_IsWinHolding;
+	}
+
+	bool RF_IsLeftAltHolding() {
+		return m_IsLeftAltHolding;
+	}
+
+	bool RF_IsRightAltHolding() {
+		return m_IsRightAltHolding;
+	}
 	
 	// MARK: - Private
 
