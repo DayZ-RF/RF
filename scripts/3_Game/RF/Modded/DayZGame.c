@@ -10,6 +10,8 @@ modded class DayZGame {
 		"OnKeyRelease",
 		"OnRPC",
 	};
+
+	private bool m_IsLeftShiftHolding;
 	
 	// MARK: - Override Init
 	
@@ -28,12 +30,23 @@ modded class DayZGame {
 
     override void OnKeyPress(int key) {
         super.OnKeyPress(key);
-		
+
+		if (key == KeyCode.KC_LSHIFT) 
+		{
+			m_IsLeftShiftHolding = true;
+		}
+
 		call("OnKeyPress", new Param1<int>(key));
     }
 
     override void OnKeyRelease(int key) {
         super.OnKeyRelease(key);
+
+		if (key == KeyCode.KC_LSHIFT) 
+		{
+			m_IsLeftShiftHolding = false;
+		}
+
 		call("OnKeyRelease", new Param1<int>(key));
     }
 
@@ -81,6 +94,10 @@ modded class DayZGame {
 
 	bool RF_IsRightAltHolding() {
 		return m_IsRightAltHolding;
+	}
+
+	bool RF_IsLeftShiftHolding() {
+		return m_IsLeftShiftHolding;
 	}
 	
 	// MARK: - Private
