@@ -9,6 +9,7 @@ modded class DayZGame {
 		"OnKeyPress",
 		"OnKeyRelease",
 		"OnRPC",
+		"OnEvent"
 	};
 
 	private bool m_IsLeftShiftHolding;
@@ -54,6 +55,12 @@ modded class DayZGame {
         super.OnRPC(sender, target, rpc_type, ctx);
 		
 		call("OnRPC", new Param4<PlayerIdentity, Object, int, ParamsReadContext>(sender, target, rpc_type, ctx));
+	}
+
+	override void OnEvent(EventType eventTypeId, Param params) {
+        super.OnEvent(eventTypeId, params);
+	
+		call("OnEvent", new Param2<EventType, Param>(eventTypeId, params));
 	}
 	
 	// MARK: - Internal
