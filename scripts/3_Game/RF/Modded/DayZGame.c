@@ -25,6 +25,8 @@ modded class DayZGame {
 
 	override void OnUpdate(bool doSim, float timeslice) {
         super.OnUpdate(doSim, timeslice);
+
+		if (subscribersMap["OnUpdate"].Count() == 0) return;
 		
 		call("OnUpdate", new Param2<bool, float>(doSim, timeslice));
 	}
@@ -32,10 +34,9 @@ modded class DayZGame {
     override void OnKeyPress(int key) {
         super.OnKeyPress(key);
 
-		if (key == KeyCode.KC_LSHIFT) 
-		{
-			m_IsLeftShiftHolding = true;
-		}
+		if (key == KeyCode.KC_LSHIFT) m_IsLeftShiftHolding = true;
+
+		if (subscribersMap["OnKeyPress"].Count() == 0) return;
 
 		call("OnKeyPress", new Param1<int>(key));
     }
@@ -43,22 +44,25 @@ modded class DayZGame {
     override void OnKeyRelease(int key) {
         super.OnKeyRelease(key);
 
-		if (key == KeyCode.KC_LSHIFT) 
-		{
-			m_IsLeftShiftHolding = false;
-		}
+		if (key == KeyCode.KC_LSHIFT) m_IsLeftShiftHolding = false;
+
+		if (subscribersMap["OnKeyRelease"].Count() == 0) return;
 
 		call("OnKeyRelease", new Param1<int>(key));
     }
 
 	override void OnRPC(PlayerIdentity sender, Object target, int rpc_type, ParamsReadContext ctx) {
         super.OnRPC(sender, target, rpc_type, ctx);
+
+		if (subscribersMap["OnRPC"].Count() == 0) return;
 		
 		call("OnRPC", new Param4<PlayerIdentity, Object, int, ParamsReadContext>(sender, target, rpc_type, ctx));
 	}
 
 	override void OnEvent(EventType eventTypeId, Param params) {
         super.OnEvent(eventTypeId, params);
+
+		if (subscribersMap["OnEvent"].Count() == 0) return;
 	
 		call("OnEvent", new Param2<EventType, Param>(eventTypeId, params));
 	}
