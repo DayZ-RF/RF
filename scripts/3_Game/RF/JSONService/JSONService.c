@@ -1,6 +1,10 @@
 // JSON Helper
 class JSONService<Class T>: Managed {
 
+	// MARK: - Private Static
+
+	private static autoptr JsonSerializer js = new JsonSerializer();
+
 	// MARK: - Public
 
 	// Read and convert filename to T
@@ -18,9 +22,8 @@ class JSONService<Class T>: Managed {
 				file_content += line_content;
 			}
 			CloseFile(handle);
-			JsonSerializer js = new JsonSerializer();
-			if(!js.ReadFromString(data, file_content, error))
-				Error(error);
+			if (!js) js = new JsonSerializer();
+			if(!js.ReadFromString(data, file_content, error)) Error(error);
 		}
 	}
 
@@ -30,11 +33,10 @@ class JSONService<Class T>: Managed {
 	// - data: T object
 	static void WriteFile(string filename, out T data) {
 		string file_content;
-		JsonSerializer js = new JsonSerializer();
+		if (!js) js = new JsonSerializer();
 		js.WriteToString(data, true, file_content);
 		FileHandle handle = OpenFile(filename, FileMode.WRITE);
-		if (handle == 0)
-			return;
+		if (handle == 0) return;
 		FPrint(handle, file_content);
 		CloseFile(handle);
 	}
@@ -45,7 +47,7 @@ class JSONService<Class T>: Managed {
 	static T ReadString(string content) {
 		T data;
 		string error;
-		JsonSerializer js = new JsonSerializer();
+		if (!js) js = new JsonSerializer();
 		js.ReadFromString(data, content, error);
 		return data;
 	}
@@ -55,7 +57,7 @@ class JSONService<Class T>: Managed {
 	// - data: T object
 	static string WriteString(out T data) {
 		string content;
-		JsonSerializer js = new JsonSerializer();
+		if (!js) js = new JsonSerializer();
 		js.WriteToString(data, true, content);
 		return content;
 	}
