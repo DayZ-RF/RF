@@ -9,14 +9,14 @@ class RF_Log: Managed {
     // MARK: - Internal
 
     void Warning(string message) {
-        Print(string.Format("[%1][%2]: %3", GetModName(), "Warning", message));
+        Print(string.Format("[%1][%2][%3]: %4", RF_TimeStamp.Now().Formatted(), GetModName(), "Warning", message));
     }
 
     void Info(string message) {
-        Print(string.Format("[%1][%2]: %3", GetModName(), "Info", message));
+        Print(string.Format("[%1][%2][%3]: %4", RF_TimeStamp.Now().Formatted(), GetModName(), "Info", message));
     }
 
     void Error(string message) {
-        Print(string.Format("[%1][%2]: %3", GetModName(), "Error", message));
+        Print(string.Format("[%1][%2][%3]: %4", RF_TimeStamp.Now().Formatted(), GetModName(), "Error", message));
     }
 }
