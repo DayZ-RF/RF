@@ -1,10 +1,10 @@
 modded class MissionGameplay { 
 	
-	// MARK: - Override methods  ----------------------------------
-	autoptr RFNotificationHud rfNotificationHud;
+	// MARK: - Override
 
 	override void OnInit() { 
-		super.OnInit(); 
-		rfNotificationHud = new RFNotificationHud(); 
+		super.OnInit();
+
+		RF_Global.InitializeClientUnits();
 	}
 }
