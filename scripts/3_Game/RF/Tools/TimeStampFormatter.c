@@ -2,9 +2,9 @@ class RF_TimeStampFormatter: Managed {
 	
 	// MARK: - Private Properties
 	
-	private autoptr array<string> weekdays = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun", };
+	private autoptr array<string> weekdays = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
 	
-	private autoptr array<string> months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Nov", "Dec"};
+	private autoptr array<string> months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 	
 	// MARK: - Internal
 
