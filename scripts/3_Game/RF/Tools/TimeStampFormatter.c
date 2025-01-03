@@ -2,15 +2,15 @@ class RF_TimeStampFormatter: Managed {
 	
 	// MARK: - Private Properties
 	
-	private autoptr array<string> weekdays = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun", };
+	private autoptr array<string> weekdays = {"#RF_Mon", "#RF_Tue", "#RF_Wed", "#RF_Thu", "#RF_Fri", "#RF_Sat", "#RF_Sun", };
 	
-	private autoptr array<string> months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Nov", "Dec"};
+	private autoptr array<string> months = {"#RF_Jan", "#RF_Feb", "#RF_Mar", "#RF_Apr", "#RF_May", "#RF_Jun", "#RF_Jul", "#RF_Aug", "#RF_Sep", "#RF_Oct", "#RF_Nov", "#RF_Dec", };
 	
 	// MARK: - Internal
 
 	string Formatted(RF_TimeStamp timeStamp) {
-		string weekday = weekdays[timeStamp.GetWeekday() - 1];
-		string month = months[timeStamp.GetMonth() - 1];
+		string weekday = Widget.TranslateString(weekdays[timeStamp.GetWeekday() - 1]);
+		string month = Widget.TranslateString(months[timeStamp.GetMonth() - 1]);
 		string day = ToString(timeStamp.GetDay());
 		string year = ToString(timeStamp.GetYear());
 		string hour = ToString(timeStamp.GetHour());
