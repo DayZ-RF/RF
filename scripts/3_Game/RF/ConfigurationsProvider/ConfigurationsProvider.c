@@ -1,18 +1,34 @@
 class RF_ConfigurationsProvider: Managed {
 
+    // MARK: - Static Properties
+
+    static ref RF_ConfigurationsProvider shared = new RF_ConfigurationsProvider();
+
     // MARK: - Private Properties
 
     private string settingsPath = "$profile:RF/settings.json";
 
-    private static ref RF_SettingsConfiguration settingsConfiguration;
+    private autoptr RF_SettingsConfiguration settingsConfiguration;
+
+    private autoptr Timer timer;
 
     // MARK: - Init
 
     void RF_ConfigurationsProvider() {
-        settingsConfiguration = fetchSettingsConfiguration();
+        updateSettingsConfiguration();
+        auto settingsExample = settingsExample();
+        settingsConfiguration._comment = settingsExample._comment;
+        settingsConfiguration._logsLevelComment = settingsExample._logsLevelComment;
+        settingsConfiguration._gmtComment = settingsExample._gmtComment;
+        writeSettingsConfuguration(settingsConfiguration);
     }
 
     // MARK: - Internal
+
+    void StartUpdateLoop() {
+        timer = new Timer();
+        timer.Run(10.0, this, "updateSettingsConfiguration", NULL, true);
+    }
 
     RF_SettingsConfiguration GetSettingsConfiguration() {
         return settingsConfiguration;
@@ -57,8 +73,15 @@ class RF_ConfigurationsProvider: Managed {
 
     private RF_SettingsConfiguration settingsExample() {
         RF_SettingsConfiguration object = new RF_SettingsConfiguration();
-        object._logsLevelComment = "New value applies on restart. 0 - Nothing, 1 - Info, 2 - Warning, 3 - Error";
-        object.logsLevel = 0;
+        object._comment = "New value applies in 10 seconds.";
+        object._logsLevelComment = "0 - Nothing, 1 - Error, 2 - Error + Warning, 3 - Error + Warning + Info.";
+        object.logsLevel = 2;
+        object._gmtComment = "Format: HHMM. First two digits is hours, second two digits is minutes. For example: 300 - Moscow, -500 - New York, 0 - London.";
+        object.gmt = 0;
         return object;
+    }
+
+    private void updateSettingsConfiguration() {
+        settingsConfiguration = fetchSettingsConfiguration();
     }
 }

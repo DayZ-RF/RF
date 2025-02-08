@@ -16,11 +16,13 @@ class RF_Global: Managed {
 		clientRPC = new RF_CL_RPCInstance();
 		soundService = new RF_SoundService();
 		rfNotificationHud = new RFNotificationHud();
+        RF_ConfigurationsProvider.shared.StartUpdateLoop();
 	}
 
 	static void InitializeServerUnits() {
 		serverRPC = new RF_SE_RPCInstance();
 		soundService = new RF_SoundService();
+        RF_ConfigurationsProvider.shared.StartUpdateLoop();
 
 		printWelcomeMessage();
 	}
