@@ -1,40 +1,40 @@
 
 class RF_LODHelper: Managed {
 
-	static RF_LODSelectionData SpawnInternalEntityAI(string className, string selectionName, string lodName, Object parent) {
-		if (!parent) return null;
+    static RF_LODSelectionData SpawnInternalEntityAI(string className, string selectionName, string lodName, Object parent) {
+        if (!parent) return null;
 
-		auto output = new RF_LODSelectionData();
-		output.parent = parent;
+        auto output = new RF_LODSelectionData();
+        output.parent = parent;
 
-		auto lod = parent.GetLODByName(lodName);
-		if (!lod) return null;
+        auto lod = parent.GetLODByName(lodName);
+        if (!lod) return null;
 
-		output.lod = lod;
+        output.lod = lod;
 
-		array<Selection> selections = {};
-		lod.GetSelections(selections);
+        array<Selection> selections = {};
+        lod.GetSelections(selections);
 
-		foreach (auto selection : selections) {
-			auto name = selection.GetName();
-			if (name == selectionName) {
-				if (selection.GetVertexCount() < 2) return null;
+        foreach (auto selection : selections) {
+            auto name = selection.GetName();
+            if (name == selectionName) {
+                if (selection.GetVertexCount() < 2) return null;
 
-				output.selection = selection;
+                output.selection = selection;
 
-				output.firstPoint = GetVertexPoint(0, parent, lod, selection);
-				output.secondPoint = GetVertexPoint(1, parent, lod, selection);
-				output.thirdPoint = GetVertexPoint(2, parent, lod, selection);
+                output.firstPoint = GetVertexPoint(0, parent, lod, selection);
+                output.secondPoint = GetVertexPoint(1, parent, lod, selection);
+                output.thirdPoint = GetVertexPoint(2, parent, lod, selection);
 
-				auto globalPosition = output.CurrentGlobalPosition();
-				auto childObject = GetGame().CreateObject(className, globalPosition);
-				if (!childObject) return null;
-                
-				auto child = EntityAI.Cast(childObject);
-				if (!child) {
-					childObject.Delete();
-					return null;
-				}
+                auto globalPosition = output.CurrentGlobalPosition();
+                auto childObject = GetGame().CreateObject(className, globalPosition);
+                if (!childObject) return null;
+
+                auto child = EntityAI.Cast(childObject);
+                if (!child) {
+                    childObject.Delete();
+                    return null;
+                }
 
                 vector mat[4];
                 auto direction = output.CurrentGlobalDirection();
@@ -43,64 +43,64 @@ class RF_LODHelper: Managed {
                 Math3D.DirectionAndUpMatrix(direction, directionUp, mat);
                 child.SetTransform(mat);
 
-				output.child = child;
+                output.child = child;
 
-				return output;
-			}
-		}
+                return output;
+            }
+        }
 
-		return null;
-	}
-	
-	static vector GetVertexPoint(int vertexIndex, Object object, LOD lod, Selection selection) {
-		auto lodVertexIndex = selection.GetLODVertexIndex(vertexIndex);
-		return lod.GetVertexPosition(lodVertexIndex);
-	}
+        return null;
+    }
+
+    static vector GetVertexPoint(int vertexIndex, Object object, LOD lod, Selection selection) {
+        auto lodVertexIndex = selection.GetLODVertexIndex(vertexIndex);
+        return lod.GetVertexPosition(lodVertexIndex);
+    }
 }
 
 class RF_LODSelectionData: Managed {
 
-	// MARK: - Internal Properties
+    // MARK: - Internal Properties
 
-	Object parent;
+    Object parent;
 
-	EntityAI child;
+    EntityAI child;
 
-	LOD lod;
+    LOD lod;
 
-	Selection selection;
+    Selection selection;
 
-	vector firstPoint;
+    vector firstPoint;
 
-	vector secondPoint;
+    vector secondPoint;
 
-	vector thirdPoint;
+    vector thirdPoint;
 
-	vector GetLocalPosition() {
-		return firstPoint;
-	}
-	
-	vector GetLocalDirection() {
-		return vector.Direction(firstPoint, secondPoint);
-	}
-	
-	vector GetLocalDirectionUp() {
-		return vector.Direction(firstPoint, thirdPoint);
-	}
+    vector GetLocalPosition() {
+        return firstPoint;
+    }
 
-	vector CurrentGlobalPosition() {
-		return parent.ModelToWorld(firstPoint);
-	}
-	
-	vector CurrentGlobalDirection() {
-		auto firstGlobalPoint = parent.ModelToWorld(firstPoint);
-		auto secondGlobalPoint = parent.ModelToWorld(secondPoint);
-		return vector.Direction(firstGlobalPoint, secondGlobalPoint);
-	}
-	
-	vector CurrentGlobalDirectionUp() {
-		auto firstGlobalPoint = parent.ModelToWorld(firstPoint);
-		auto thirdGlobalPoint = parent.ModelToWorld(thirdPoint);
-		return vector.Direction(firstGlobalPoint, thirdGlobalPoint);
-	}
+    vector GetLocalDirection() {
+        return vector.Direction(firstPoint, secondPoint);
+    }
+
+    vector GetLocalDirectionUp() {
+        return vector.Direction(firstPoint, thirdPoint);
+    }
+
+    vector CurrentGlobalPosition() {
+        return parent.ModelToWorld(firstPoint);
+    }
+
+    vector CurrentGlobalDirection() {
+        auto firstGlobalPoint = parent.ModelToWorld(firstPoint);
+        auto secondGlobalPoint = parent.ModelToWorld(secondPoint);
+        return vector.Direction(firstGlobalPoint, secondGlobalPoint);
+    }
+
+    vector CurrentGlobalDirectionUp() {
+        auto firstGlobalPoint = parent.ModelToWorld(firstPoint);
+        auto thirdGlobalPoint = parent.ModelToWorld(thirdPoint);
+        return vector.Direction(firstGlobalPoint, thirdGlobalPoint);
+    }
 }

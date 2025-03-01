@@ -51,7 +51,7 @@ class RF_RPCInstance: Managed {
     }
 
     // MARK: - Subscribe
-    
+
     void OnRPC(PlayerIdentity sender, Object target, int rpc_type, ParamsReadContext ctx) {
         if (rpc_type != GetRPCType()) return;
 

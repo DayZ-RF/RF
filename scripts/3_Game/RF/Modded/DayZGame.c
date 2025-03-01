@@ -1,129 +1,129 @@
 modded class DayZGame {
-	
-	// MARK: - Private Properties
 
-	private autoptr map<string, autoptr TManagedSet> subscribersMap = new map<string, autoptr TManagedSet>();
-	
-	private autoptr array<string> dayZGameEvents = {
-		"OnUpdate",
-		"OnKeyPress",
-		"OnKeyRelease",
-		"OnRPC",
-		"OnEvent"
-	};
+    // MARK: - Private Properties
 
-	private bool m_IsLeftShiftHolding;
-	
-	// MARK: - Override Init
-	
-	void DayZGame() {
-		foreach (string dayZGameEvent : dayZGameEvents)
-			subscribersMap[dayZGameEvent] = new TManagedSet();
-	}
-	
-	// MARK: - Override Events
+    private autoptr map<string, autoptr TManagedSet> subscribersMap = new map<string, autoptr TManagedSet>();
 
-	override void OnUpdate(bool doSim, float timeslice) {
+    private autoptr array<string> dayZGameEvents = {
+        "OnUpdate",
+        "OnKeyPress",
+        "OnKeyRelease",
+        "OnRPC",
+        "OnEvent"
+    };
+
+    private bool m_IsLeftShiftHolding;
+
+    // MARK: - Override Init
+
+    void DayZGame() {
+        foreach (string dayZGameEvent : dayZGameEvents)
+            subscribersMap[dayZGameEvent] = new TManagedSet();
+    }
+
+    // MARK: - Override Events
+
+    override void OnUpdate(bool doSim, float timeslice) {
         super.OnUpdate(doSim, timeslice);
 
-		if (subscribersMap["OnUpdate"].Count() == 0) return;
-		
-		call("OnUpdate", new Param2<bool, float>(doSim, timeslice));
-	}
+        if (subscribersMap["OnUpdate"].Count() == 0) return;
+
+        call("OnUpdate", new Param2<bool, float>(doSim, timeslice));
+    }
 
     override void OnKeyPress(int key) {
         super.OnKeyPress(key);
 
-		if (key == KeyCode.KC_LSHIFT) m_IsLeftShiftHolding = true;
+        if (key == KeyCode.KC_LSHIFT) m_IsLeftShiftHolding = true;
 
-		if (subscribersMap["OnKeyPress"].Count() == 0) return;
+        if (subscribersMap["OnKeyPress"].Count() == 0) return;
 
-		call("OnKeyPress", new Param1<int>(key));
+        call("OnKeyPress", new Param1<int>(key));
     }
 
     override void OnKeyRelease(int key) {
         super.OnKeyRelease(key);
 
-		if (key == KeyCode.KC_LSHIFT) m_IsLeftShiftHolding = false;
+        if (key == KeyCode.KC_LSHIFT) m_IsLeftShiftHolding = false;
 
-		if (subscribersMap["OnKeyRelease"].Count() == 0) return;
+        if (subscribersMap["OnKeyRelease"].Count() == 0) return;
 
-		call("OnKeyRelease", new Param1<int>(key));
+        call("OnKeyRelease", new Param1<int>(key));
     }
 
-	override void OnRPC(PlayerIdentity sender, Object target, int rpc_type, ParamsReadContext ctx) {
+    override void OnRPC(PlayerIdentity sender, Object target, int rpc_type, ParamsReadContext ctx) {
         super.OnRPC(sender, target, rpc_type, ctx);
 
-		if (subscribersMap["OnRPC"].Count() == 0) return;
-		
-		call("OnRPC", new Param4<PlayerIdentity, Object, int, ParamsReadContext>(sender, target, rpc_type, ctx));
-	}
+        if (subscribersMap["OnRPC"].Count() == 0) return;
 
-	override void OnEvent(EventType eventTypeId, Param params) {
+        call("OnRPC", new Param4<PlayerIdentity, Object, int, ParamsReadContext>(sender, target, rpc_type, ctx));
+    }
+
+    override void OnEvent(EventType eventTypeId, Param params) {
         super.OnEvent(eventTypeId, params);
 
-		if (subscribersMap["OnEvent"].Count() == 0) return;
-	
-		call("OnEvent", new Param2<EventType, Param>(eventTypeId, params));
-	}
-	
-	// MARK: - Internal
+        if (subscribersMap["OnEvent"].Count() == 0) return;
 
-	bool Subscribe(Managed object, string dayZGameEvent) {
-		if (!subscribersMap[dayZGameEvent]) return false;
-		
-		subscribersMap[dayZGameEvent].Insert(object);
-		
-		return true;
-	}
+        call("OnEvent", new Param2<EventType, Param>(eventTypeId, params));
+    }
 
-	bool Unsubscribe(Managed object, string dayZGameEvent) {
-		if (!subscribersMap[dayZGameEvent]) return false;
+    // MARK: - Internal
 
-		int eventIndex = dayZGameEvents.Find(dayZGameEvent);
-		if (eventIndex == -1) return false;
-		
-		int objectIndex = subscribersMap[dayZGameEvent].Find(object);
-		if (objectIndex == -1) return false;
-		
-		subscribersMap[dayZGameEvent].Remove(objectIndex);
-		
-		return true;
-	}
+    bool Subscribe(Managed object, string dayZGameEvent) {
+        if (!subscribersMap[dayZGameEvent]) return false;
 
-	bool RF_IsCtrlHolding() {
-		return m_IsCtrlHolding;
-	}
+        subscribersMap[dayZGameEvent].Insert(object);
 
-	bool RF_IsWinHolding() {
-		return m_IsWinHolding;
-	}
+        return true;
+    }
 
-	bool RF_IsLeftAltHolding() {
-		return m_IsLeftAltHolding;
-	}
+    bool Unsubscribe(Managed object, string dayZGameEvent) {
+        if (!subscribersMap[dayZGameEvent]) return false;
 
-	bool RF_IsRightAltHolding() {
-		return m_IsRightAltHolding;
-	}
+        int eventIndex = dayZGameEvents.Find(dayZGameEvent);
+        if (eventIndex == -1) return false;
 
-	bool RF_IsLeftShiftHolding() {
-		return m_IsLeftShiftHolding;
-	}
-	
-	// MARK: - Private
+        int objectIndex = subscribersMap[dayZGameEvent].Find(object);
+        if (objectIndex == -1) return false;
 
-	private void call(string dayZGameEvent, Param params) {
-		autoptr TManagedSet subscribers = subscribersMap[dayZGameEvent];
-		if (!subscribers) return;
+        subscribersMap[dayZGameEvent].Remove(objectIndex);
+
+        return true;
+    }
+
+    bool RF_IsCtrlHolding() {
+        return m_IsCtrlHolding;
+    }
+
+    bool RF_IsWinHolding() {
+        return m_IsWinHolding;
+    }
+
+    bool RF_IsLeftAltHolding() {
+        return m_IsLeftAltHolding;
+    }
+
+    bool RF_IsRightAltHolding() {
+        return m_IsRightAltHolding;
+    }
+
+    bool RF_IsLeftShiftHolding() {
+        return m_IsLeftShiftHolding;
+    }
+
+    // MARK: - Private
+
+    private void call(string dayZGameEvent, Param params) {
+        autoptr TManagedSet subscribers = subscribersMap[dayZGameEvent];
+        if (!subscribers) return;
 
         for (int i = subscribers.Count() - 1; i >= 0; i--) {
             auto subscriber = subscribers[i];
             if (!subscriber) {
-                subscribers.Remove(i); 
+                subscribers.Remove(i);
                 continue;
             }
-			GetGame().GameScript.CallFunctionParams(subscriber, dayZGameEvent, NULL, params);
-		}
-	}
+            GetGame().GameScript.CallFunctionParams(subscriber, dayZGameEvent, NULL, params);
+        }
+    }
 }

@@ -1,6 +1,6 @@
 class RF_SoundModel: Managed {
 
-	string soundSet;
+    string soundSet;
 
-	bool loop;
+    bool loop;
 }

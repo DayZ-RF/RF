@@ -30,6 +30,7 @@ class RF_Color: Managed {
     }
 
     int GetColorInt() {
+
         return ARGB(this.a, this.r, this.g, this.b);
     }
 

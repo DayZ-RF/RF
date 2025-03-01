@@ -5,11 +5,17 @@ class RF_TimeStamp: Managed {
     autoptr RF_TimeStampFormatter formatter = new RF_TimeStampFormatter();
 
     int GetTime() { return time; }
+
     int GetYear() { return year; }
+
     int GetMonth() { return month; }
+
     int GetDay() { return day; }
+
     int GetHour() { return hour; }
+
     int GetMinute() { return minute; }
+
     int GetSecond() { return second; }
 
     // MARK: - Private Constants
@@ -59,12 +65,13 @@ class RF_TimeStamp: Managed {
     }
 
     static RF_TimeStamp Zero() {
+
         return new RF_TimeStamp();
     }
 
     // MARK: - Internal
-        
-    string Formatted() { 
+
+    string Formatted() {
         return formatter.Formatted(this);
     }
 
@@ -87,11 +94,11 @@ class RF_TimeStamp: Managed {
         return timeStamp;
     }
 
-    int GetWeekday() { 
+    int GetWeekday() {
         int days = RF_Time.DaysFromHigh(year, month, day);
         return RF_Time.WeekdayFromDays(days);
     }
-        
+
     // MARK: - Private
 
     private bool configure(int Time) {

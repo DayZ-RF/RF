@@ -1,10 +1,10 @@
 modded class MissionServer {
 
-	// MARK: - Override
+    // MARK: - Override
 
-	override void OnInit() {
-		super.OnInit();
+    override void OnInit() {
+        super.OnInit();
 
-		RF_Global.InitializeServerUnits();
-	}
+        RF_Global.InitializeServerUnits();
+    }
 }

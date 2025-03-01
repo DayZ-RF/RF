@@ -2,9 +2,9 @@ class RF_SettingsConfiguration: Managed {
 
     string _comment;
 
-	string _logsLevelComment;
+    string _logsLevelComment;
 
-	int logsLevel;
+    int logsLevel;
 
     string _gmtComment;
 

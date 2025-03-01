@@ -9,35 +9,35 @@ class RF_SE_RPCInstance: RF_RPCInstance {
 
     // MARK: - Internal
 
-	override void Handle(PlayerIdentity sender, string key, ParamsReadContext ctx) {
-		super.Handle(sender, key, ctx);
-		switch (key) {
-			case "getSound": {
-				getSound(sender, ctx);
-				break;
-			}
-			case "removeSound": {
-				removeSound(sender, ctx);
-				break;
-			}
-		}
-	}
+    override void Handle(PlayerIdentity sender, string key, ParamsReadContext ctx) {
+        super.Handle(sender, key, ctx);
+        switch (key) {
+            case "getSound": {
+                getSound(sender, ctx);
+                break;
+            }
+            case "removeSound": {
+                removeSound(sender, ctx);
+                break;
+            }
+        }
+    }
 
-	// MARK: - Private
+    // MARK: - Private
 
-	private void getSound(PlayerIdentity sender, ParamsReadContext ctx) {
-		RF_Sound sound;
+    private void getSound(PlayerIdentity sender, ParamsReadContext ctx) {
+        RF_Sound sound;
 
-		if (!ctx.Read(sound)) return;
+        if (!ctx.Read(sound)) return;
 
-		if (sound) Send("getSound", sound, sound.GetModel(), sender);
-	}
+        if (sound) Send("getSound", sound, sound.GetModel(), sender);
+    }
 
-	private void removeSound(PlayerIdentity sender, ParamsReadContext ctx) {
-		RF_Sound sound;
+    private void removeSound(PlayerIdentity sender, ParamsReadContext ctx) {
+        RF_Sound sound;
 
-		if (!ctx.Read(sound)) return;
+        if (!ctx.Read(sound)) return;
 
-		if (sound) sound.Delete();
-	}
+        if (sound) sound.Delete();
+    }
 }

@@ -1,10 +1,10 @@
-modded class MissionGameplay { 
-	
-	// MARK: - Override
+modded class MissionGameplay {
 
-	override void OnInit() { 
-		super.OnInit();
+    // MARK: - Override
 
-		RF_Global.InitializeClientUnits();
-	}
+    override void OnInit() {
+        super.OnInit();
+
+        RF_Global.InitializeClientUnits();
+    }
 }
