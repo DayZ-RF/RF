@@ -1,5 +1,11 @@
 class RF_CL_RPCInstance: RF_RPCInstance {
 
+	// MARK: - Override Properties
+
+	override int GetRPCType() { return RF_Constant.RPC_TYPE; }
+
+	override string GetModName() { return RF_Constant.MOD_NAME; }
+
     // MARK: - Internal
 
     void Send(string key, RF_Sound param1, PlayerIdentity playerIdentity = null) {
