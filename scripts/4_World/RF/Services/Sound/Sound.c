@@ -2,9 +2,9 @@ class RF_Sound: ItemBase {
 
     // MARK: - Private Properties
 
-    private autoptr EffectSound sound;
+    private autoptr EffectSound rfSound;
 
-    private autoptr RF_SoundModel model;
+    private autoptr RF_SoundModel rfModel;
 
     private bool isRemovePending;
 
@@ -26,20 +26,20 @@ class RF_Sound: ItemBase {
     // MARK: - Internal
 
     RF_SoundModel GetModel() {
-        return model;
+        return rfModel;
     }
 
     void SetModel(RF_SoundModel _model) {
-        model = _model;
+        rfModel = _model;
 
         if (GetGame().IsClient()) {
-            if (sound) StopSoundSet(sound);
+            if (rfSound) StopSoundSet(rfSound);
 
             isRemovePending = false;
 
-            sound = SEffectManager.PlaySound(model.soundSet, GetPosition());
-            sound.SetSoundLoop(model.loop);
-            sound.SetSoundAutodestroy(true);
+            rfSound = SEffectManager.PlaySound(rfModel.soundSet, GetPosition());
+            rfSound.SetSoundLoop(rfModel.loop);
+            rfSound.SetSoundAutodestroy(true);
         }
     }
 
@@ -50,7 +50,7 @@ class RF_Sound: ItemBase {
     }
 
     override void EOnFrame(IEntity other, float timeSlice) {
-        if (!isRemovePending && !sound && model) {
+        if (!isRemovePending && !rfSound && rfModel) {
             isRemovePending = true;
             RF_Global.clientRPC.Send("removeSound", this);
         }
@@ -71,6 +71,6 @@ class RF_Sound: ItemBase {
     }
 
     private void teardownClient() {
-        if (sound) StopSoundSet(sound);
+        if (rfSound) StopSoundSet(rfSound);
     }
 }
