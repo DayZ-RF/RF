@@ -10,18 +10,22 @@ class RF_Global: Managed {
 
     static ref RFNotificationHud rfNotificationHud;
 
+    static ref RF_MapService mapService;
+
     // MARK: - Static
 
     static void InitializeClientUnits() {
         clientRPC = new RF_CL_RPCInstance();
         soundService = new RF_SoundService();
         rfNotificationHud = new RFNotificationHud();
+        mapService = new RF_MapService();
         RF_ConfigurationsProvider.shared.StartUpdateLoop();
     }
 
     static void InitializeServerUnits() {
         serverRPC = new RF_SE_RPCInstance();
         soundService = new RF_SoundService();
+        mapService = new RF_MapService();
         RF_ConfigurationsProvider.shared.StartUpdateLoop();
 
         printWelcomeMessage();

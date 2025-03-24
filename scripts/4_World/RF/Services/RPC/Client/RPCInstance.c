@@ -1,10 +1,10 @@
 class RF_CL_RPCInstance: RF_RPCInstance {
 
-	// MARK: - Override Properties
+    // MARK: - Override Properties
 
-	override int GetRPCType() { return RF_Constant.RPC_TYPE; }
+    override int GetRPCType() { return RF_Constant.RPC_TYPE; }
 
-	override string GetModName() { return RF_Constant.MOD_NAME; }
+    override string GetModName() { return RF_Constant.MOD_NAME; }
 
     // MARK: - Internal
 
