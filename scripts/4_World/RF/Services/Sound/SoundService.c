@@ -1,30 +1,67 @@
 class RF_SoundService: Managed {
 
+    // MARK: - Private Properties
+
+    private static int s_nextId = 1;
+    private ref map<int, ref RF_Sound> m_sounds = new map<int, ref RF_Sound>();
+
     // MARK: - Internal
 
-    RF_Sound Play(vector position, string soundSet, bool loop = false, Managed delegate = null) {
-        auto object = GetGame().CreateObject("RF_Sound", position, GetGame().IsClient());
-        if (!object) {
-            RF_Log().Error(string.Format("Can not create sound %1 at %2", soundSet, position));
-            return null;
+    RF_Sound Play(vector position, string soundSet, bool loop = false) {
+        auto sound = new RF_Sound();
+        sound.id = s_nextId++;
+        sound.soundSet = soundSet;
+        sound.position = position;
+        sound.loop = loop;
+
+        if (GetGame().IsServer()) {
+            TStringArray data = {sound.id.ToString(), soundSet, position[0].ToString(), position[1].ToString(), position[2].ToString(), loop.ToString()};
+            RF_Global.serverRPC.Send("playSound", data);
+        } else {
+            sound.PlayOnClient();
         }
 
-        auto sound = RF_Sound.Cast(object);
-        if (!sound) {
-            RF_Log().Error(string.Format("Sound %1 at %2 is not inherited from RF_Sound", soundSet, position));
-            return null;
+        if (loop) {
+            m_sounds.Set(sound.id, sound);
         }
-
-        auto model = new RF_SoundModel();
-        model.soundSet = soundSet;
-        model.loop = loop;
-        sound.delegate = delegate;
-        sound.SetModel(model);
 
         return sound;
     }
 
     void Stop(RF_Sound sound) {
-        if (sound) sound.Delete();
+        if (!sound) return;
+
+        if (GetGame().IsServer()) {
+            RF_Global.serverRPC.Send("stopSound", sound.id);
+        } else {
+            sound.StopOnClient();
+        }
+
+        m_sounds.Remove(sound.id);
+    }
+
+    // MARK: - Client RPC Handlers
+
+    void HandlePlaySound(TStringArray data) {
+        if (!data || data.Count() < 6) return;
+
+        auto sound = new RF_Sound();
+        sound.id = data[0].ToInt();
+        sound.soundSet = data[1];
+        sound.position = Vector(data[2].ToFloat(), data[3].ToFloat(), data[4].ToFloat());
+        sound.loop = data[5].ToInt() != 0;
+        sound.PlayOnClient();
+
+        if (sound.loop) {
+            m_sounds.Set(sound.id, sound);
+        }
+    }
+
+    void HandleStopSound(int soundId) {
+        auto sound = m_sounds.Get(soundId);
+        if (sound) {
+            sound.StopOnClient();
+            m_sounds.Remove(soundId);
+        }
     }
 }
