@@ -50,6 +50,11 @@ class RF_RPCInstance: Managed {
         GetGame().RPCSingleParam(null, GetRPCType(), param, true, playerIdentity);
     }
 
+    void Send(string key, RF_SoundData rpcObject, PlayerIdentity playerIdentity = null) {
+        Param3<string, string, RF_SoundData> param = new Param3<string, string, RF_SoundData>(GetModName(), key, rpcObject);
+        GetGame().RPCSingleParam(null, GetRPCType(), param, true, playerIdentity);
+    }
+
     // MARK: - Subscribe
 
     void OnRPC(PlayerIdentity sender, Object target, int rpc_type, ParamsReadContext ctx) {

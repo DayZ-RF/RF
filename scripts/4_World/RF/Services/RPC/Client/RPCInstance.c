@@ -12,7 +12,7 @@ class RF_CL_RPCInstance: RF_RPCInstance {
         super.Handle(sender, key, ctx);
         switch (key) {
             case "playSound": {
-                TStringArray data;
+                RF_SoundData data;
                 if (ctx.Read(data)) RF_Global.soundService.HandlePlaySound(data);
                 break;
             }

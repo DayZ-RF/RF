@@ -15,7 +15,11 @@ class RF_SoundService: Managed {
         sound.loop = loop;
 
         if (GetGame().IsServer()) {
-            TStringArray data = {sound.id.ToString(), soundSet, position[0].ToString(), position[1].ToString(), position[2].ToString(), loop.ToString()};
+            auto data = new RF_SoundData();
+            data.id = sound.id;
+            data.soundSet = soundSet;
+            data.position = position;
+            data.loop = loop;
             RF_Global.serverRPC.Send("playSound", data);
         } else {
             sound.PlayOnClient();
@@ -40,20 +44,34 @@ class RF_SoundService: Managed {
         m_sounds.Remove(sound.id);
     }
 
+    // MARK: - Sync
+
+    void SyncLoopSounds(PlayerIdentity player) {
+        foreach (int id, RF_Sound sound : m_sounds) {
+            auto data = new RF_SoundData();
+            data.id = sound.id;
+            data.soundSet = sound.soundSet;
+            data.position = sound.position;
+            data.loop = true;
+            RF_Global.serverRPC.Send("playSound", data, player);
+        }
+    }
+
     // MARK: - Client RPC Handlers
 
-    void HandlePlaySound(TStringArray data) {
-        if (!data || data.Count() < 6) return;
+    void HandlePlaySound(RF_SoundData data) {
+        if (!data) return;
 
-        auto sound = new RF_Sound();
-        sound.id = data[0].ToInt();
-        sound.soundSet = data[1];
-        sound.position = Vector(data[2].ToFloat(), data[3].ToFloat(), data[4].ToFloat());
-        sound.loop = data[5].ToInt() != 0;
-        sound.PlayOnClient();
-
-        if (sound.loop) {
+        if (data.loop) {
+            auto sound = new RF_Sound();
+            sound.id = data.id;
+            sound.soundSet = data.soundSet;
+            sound.position = data.position;
+            sound.loop = true;
+            sound.PlayOnClient();
             m_sounds.Set(sound.id, sound);
+        } else {
+            SEffectManager.PlaySound(data.soundSet, data.position);
         }
     }
 

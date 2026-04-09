@@ -9,14 +9,16 @@ class RF_Sound: Managed {
 
     // MARK: - Private Properties
 
-    private EffectSound m_effectSound;
+    private ref EffectSound m_effectSound;
 
     // MARK: - Internal
 
     void PlayOnClient() {
-        m_effectSound = SEffectManager.PlaySound(soundSet, position, 0, 0, loop);
+        m_effectSound = SEffectManager.CreateSound(soundSet, position, 0, 0, loop);
         if (m_effectSound) {
+            m_effectSound.SetSoundLoop(loop);
             m_effectSound.SetSoundAutodestroy(!loop);
+            m_effectSound.SoundPlay();
         }
     }
 
