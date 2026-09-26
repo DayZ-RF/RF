@@ -9,4 +9,8 @@ class RF_SettingsConfiguration: Managed {
     string _gmtComment;
 
     int gmt;
+
+    string _mapUpdateIntervalComment;
+
+    float mapUpdateInterval;
 }

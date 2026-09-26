@@ -6,6 +6,10 @@ class RF_ConfigurationsProvider: Managed {
 
     // MARK: - Private Properties
 
+    private static const float MAP_UPDATE_INTERVAL_DEFAULT = 5.0;
+
+    private static const float MAP_UPDATE_INTERVAL_MIN = 0.5;
+
     private string settingsPath = "$profile:RF/settings.json";
 
     private autoptr RF_SettingsConfiguration settingsConfiguration;
@@ -20,6 +24,7 @@ class RF_ConfigurationsProvider: Managed {
         settingsConfiguration._comment = settingsExample._comment;
         settingsConfiguration._logsLevelComment = settingsExample._logsLevelComment;
         settingsConfiguration._gmtComment = settingsExample._gmtComment;
+        settingsConfiguration._mapUpdateIntervalComment = settingsExample._mapUpdateIntervalComment;
         writeSettingsConfuguration(settingsConfiguration);
     }
 
@@ -38,6 +43,11 @@ class RF_ConfigurationsProvider: Managed {
         writeSettingsConfuguration(configuration);
     }
 
+    float GetMapUpdateInterval() {
+        if (!settingsConfiguration) return MAP_UPDATE_INTERVAL_DEFAULT;
+        return normalizedMapUpdateInterval(settingsConfiguration.mapUpdateInterval);
+    }
+
     // MARK: - Private
 
     private RF_SettingsConfiguration fetchSettingsConfiguration() {
@@ -52,7 +62,14 @@ class RF_ConfigurationsProvider: Managed {
                 writeSettingsConfuguration(configuration);
             }
         }
+        configuration.mapUpdateInterval = normalizedMapUpdateInterval(configuration.mapUpdateInterval);
         return configuration;
+    }
+
+    private float normalizedMapUpdateInterval(float value) {
+        if (value <= 0) return MAP_UPDATE_INTERVAL_DEFAULT;
+        if (value < MAP_UPDATE_INTERVAL_MIN) return MAP_UPDATE_INTERVAL_MIN;
+        return value;
     }
 
     private void makeDirectory() {
@@ -78,6 +95,8 @@ class RF_ConfigurationsProvider: Managed {
         object.logsLevel = 2;
         object._gmtComment = "Format: HHMM. First two digits is hours, second two digits is minutes. For example: 300 - Moscow, -500 - New York, 0 - London.";
         object.gmt = 0;
+        object._mapUpdateIntervalComment = "Third-party map markers sync interval in seconds. 0 - default (5.0), minimum 0.5. Applies after server restart.";
+        object.mapUpdateInterval = MAP_UPDATE_INTERVAL_DEFAULT;
         return object;
     }
 

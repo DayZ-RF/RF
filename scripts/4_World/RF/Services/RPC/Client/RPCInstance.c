@@ -21,6 +21,12 @@ class RF_CL_RPCInstance: RF_RPCInstance {
                 if (ctx.Read(soundId)) RF_Global.soundService.HandleStopSound(soundId);
                 break;
             }
+            case "vppMapMarkersDidUpdate": {
+                RF_VPPMapData vppMapData;
+                if (!ctx.Read(vppMapData)) break;
+                if (RF_Global.mapService) RF_Global.mapService.vppMapClientService.HandleMarkersDidUpdate(vppMapData);
+                break;
+            }
         }
     }
 }

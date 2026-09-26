@@ -6,7 +6,7 @@ class RF_RFMapService: Managed {
     #endif
     #endif
 
-    void CreateMapMarker(string uuid, string title, vector pos, string iconPath = "", RF_Color color = NULL, bool isVisible = true, float radius = 0,  bool hideIntersects = false) {
+    void CreateMapMarker(string uuid, string title, vector pos, string iconPath = "", RF_Color color = NULL, bool isVisible = true, float radius = 0,  bool hideIntersects = false, float strikeWidth = 3.0, float borderWidth = 3.0) {
         #ifdef SERVER
         #ifdef RF_MAP
         auto markerEntity = new RF_MAP_MarkerEntity();
@@ -20,10 +20,10 @@ class RF_RFMapService: Managed {
             markerEntity.circle = new RF_MAP_CircleEntity();
             markerEntity.circle.radius = radius;
             markerEntity.circle.strike = new RF_MAP_StrikeEntity();
-            markerEntity.circle.strike.width = 3.0;
+            markerEntity.circle.strike.width = strikeWidth;
             markerEntity.circle.strike.color = color;
             markerEntity.circle.border = new RF_MAP_BorderEntity();
-            markerEntity.circle.border.width = 3.0;
+            markerEntity.circle.border.width = borderWidth;
             markerEntity.circle.border.color = color;
         }
         auto newMarker = RF_MAP_SE_Global.mapManager.AddEventMarker(markerEntity);
@@ -33,7 +33,7 @@ class RF_RFMapService: Managed {
             return;
         }
 
-        markersMap.Insert(uuid, newMarker);
+        markersMap.Set(uuid, newMarker);
         RF_Log().Info(string.Format("[RF_RFMapService] - CreateRFMapMarker: %1", uuid));
 
         #endif
@@ -47,8 +47,11 @@ class RF_RFMapService: Managed {
 
         RF_Log().Info(string.Format("RF_RFMapService - RemoveRFMapMarker: %1", uuid));
 
+        if (!markersMap.Contains(uuid)) return;
+
         auto marker = markersMap.Get(uuid);
         RF_MAP_SE_Global.mapManager.RemoveEventMarker(marker);
+        markersMap.Remove(uuid);
 
         #endif
         #endif
