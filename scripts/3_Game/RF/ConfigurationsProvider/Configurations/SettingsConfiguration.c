@@ -13,4 +13,8 @@ class RF_SettingsConfiguration: Managed {
     string _mapUpdateIntervalComment;
 
     float mapUpdateInterval;
+
+    string _createDefaultDumpComment;
+
+    bool createDefaultDump;
 }

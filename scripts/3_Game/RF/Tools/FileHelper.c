@@ -40,4 +40,46 @@ class RF_File: Managed {
 
         return list;
     }
+
+    static void MakeDirectories(string path) {
+        path.Replace("\\", "/");
+        TStringArray parts = {};
+        path.Split("/", parts);
+
+        string current = "";
+        foreach (string part : parts) {
+            if (part.Length() == 0) continue;
+            current = current + part + "/";
+            if (!FileExist(current)) MakeDirectory(current);
+        }
+    }
+
+    static void DeleteDirectory(string folder) {
+        folder.Replace("\\", "/");
+        while (folder.Length() > 0 && folder.Substring(folder.Length() - 1, 1) == "/") {
+            folder = folder.Substring(0, folder.Length() - 1);
+        }
+        if (!FileExist(folder)) return;
+
+        TStringArray entries = {};
+        string fileName;
+        FileAttr fileAttr;
+        FindFileHandle handle = FindFileEx(folder + "/*", fileName, fileAttr, FindFileFlags.DIRECTORIES);
+        if (handle) {
+            bool found = true;
+            while (found) {
+                if (fileName != "." && fileName != "..") entries.Insert(fileName);
+                found = FindNextFile(handle, fileName, fileAttr);
+            }
+            CloseFindFile(handle);
+        }
+
+        foreach (string entry : entries) {
+            string entryPath = folder + "/" + entry;
+            if (DeleteFile(entryPath)) continue;
+            DeleteDirectory(entryPath);
+        }
+
+        DeleteFile(folder);
+    }
 }
