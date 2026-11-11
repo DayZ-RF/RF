@@ -25,6 +25,7 @@ class RF_ConfigurationsProvider: Managed {
         settingsConfiguration._logsLevelComment = settingsExample._logsLevelComment;
         settingsConfiguration._gmtComment = settingsExample._gmtComment;
         settingsConfiguration._mapUpdateIntervalComment = settingsExample._mapUpdateIntervalComment;
+        settingsConfiguration._createDefaultDumpComment = settingsExample._createDefaultDumpComment;
         writeSettingsConfuguration(settingsConfiguration);
     }
 
@@ -46,6 +47,11 @@ class RF_ConfigurationsProvider: Managed {
     float GetMapUpdateInterval() {
         if (!settingsConfiguration) return MAP_UPDATE_INTERVAL_DEFAULT;
         return normalizedMapUpdateInterval(settingsConfiguration.mapUpdateInterval);
+    }
+
+    bool IsCreateDefaultDumpEnabled() {
+        if (!settingsConfiguration) return false;
+        return settingsConfiguration.createDefaultDump;
     }
 
     // MARK: - Private
@@ -97,6 +103,8 @@ class RF_ConfigurationsProvider: Managed {
         object.gmt = 0;
         object._mapUpdateIntervalComment = "Third-party map markers sync interval in seconds. 0 - default (5.0), minimum 0.5. Applies after server restart.";
         object.mapUpdateInterval = MAP_UPDATE_INTERVAL_DEFAULT;
+        object._createDefaultDumpComment = "1 - on every server start each RF mod rewrites its default configs into RF/00_DEFAULT_CONFIGS/<MOD>/, removing the previous dump. 0 - off. Applies after server restart.";
+        object.createDefaultDump = false;
         return object;
     }
 
